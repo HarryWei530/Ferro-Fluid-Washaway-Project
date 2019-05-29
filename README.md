@@ -1,4 +1,6 @@
-# YeckoProject
+# Ferro Fluid Washaway Project
+## Haoran Wei, Under direction of Professor Phillip Yecko
+### The Cooper Union
 
 This project contains code that binarizes top images taken of a ferrofluid.\
 Full paper (not yet publised) could be found here.\

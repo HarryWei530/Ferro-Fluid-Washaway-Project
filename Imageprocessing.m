@@ -1,8 +1,8 @@
 %% Image processing main
-first = 1;
-last = 25;
+first = 3;
+last = 5;
 
-figure, imshow('top (1).jpg');
+figure, imshow(sprintf('top (%d).jpg',first));
 h = imrect;
 position = wait(h);
 rect = getPosition(h);

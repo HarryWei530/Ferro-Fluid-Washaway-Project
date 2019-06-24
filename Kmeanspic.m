@@ -22,13 +22,13 @@ ab = double(lab_he(:,:,2:3));
 nrows = size(ab,1);
 ncols = size(ab,2);
 ab = reshape(ab,nrows*ncols,2);
-nColors = 5; % Setting number of clusters
+nColors = 8; % Setting number of clusters
 if first_iter
 [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
-                                      'Replicates',1);
+                                      'Replicates',1,'Options',statset('UseParallel',true));
 else
     [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
-                                      'Replicates',1,'Start',cluster_center);
+                                      'Replicates',1,'Start',cluster_center,'Options',statset('UseParallel',true));
 end
 ROI = reshape(cluster_idx,nrows,ncols);
 ROI = uint8(ROI*20);

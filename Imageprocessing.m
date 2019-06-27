@@ -1,11 +1,9 @@
 %% Image processing main
-first = 3;
-last = 5;
+close all;
+first = 1;
+last = 90;
 
-figure, imshow(sprintf('top (%d).jpg',first));
-h = imrect;
-position = wait(h);
-rect = getPosition(h);
-
-loopkmeans(first,last,rect,0);
+tic
+loopkmeans(first,last,0);
+toc
 result = loopbincount(first,last)

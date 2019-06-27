@@ -1,13 +1,30 @@
-function cluster_center = Kmeanspic(filename,number,cluster_center,first_iter,rect,pausetime)
-% Performs Kmeans on LAB colour space, save clusters in grayscale
-rng(1)
-warning('off', 'images:initSize:adjustingMag')
-im = imread(sprintf('%s (%d).jpg',filename,number));
+function cluster_center = Kmeanspic(filename,number,cluster_center,first_iter,pausetime)
 
-figure(1);
-imshow(im)
-rectangle('Position',rect,'EdgeColor','r')
-pause(pausetime)
+warning('off','images:initSize:adjustingMag');
+fprintf("Kmeans is running on top (%d)\n",number);
+rng(1)
+im = imread(sprintf('%s (%d).JPG',filename,number));
+
+%% determines ROI
+    imROI = rgb2gray(im);
+    level = graythresh(imROI);
+    BW = imbinarize(imROI,level);  %Otsu thresholding
+    BW = logical(BW*-1+1);
+
+    BW= bwlabel(BW, 8);
+    stats = regionprops(BW,'Area','Centroid');
+    idx = find([stats.Area] == max([stats.Area]));  %Find maximum connected component (should be the droplet)
+    center = uint16(stats(idx).Centroid);  %Find center of droplet
+    rect = [center(1)-2000,center(2)-1500,4000,3000];  %Form ROI around center of droplet 
+%% Performs Kmeans on LAB colour space, save clusters in grayscale
+
+if(pausetime~=0)
+    figure(1);
+    imshow(im)
+    rectangle('Position',rect,'EdgeColor','r')
+    pause(pausetime);
+    close(figure(1));
+end
 
 %% cropping image according to rectangle
 im = imcrop( im, rect );
@@ -35,6 +52,5 @@ ROI = uint8(ROI*20);
 
 imwrite(ROI,sprintf('%s(%d).bmp',filename,number));
 figure(1);
-imshowpair(im,ROI,'checkerboard'),title(sprintf('%s(%d).bmp',filename,number));
-pause(pausetime);
-warning('on', 'images:initSize:adjustingMag')
+%imshowpair(im,ROI,'checkerboard'),title(sprintf('%s(%d).bmp',filename,number));
+%pause(pausetime);

@@ -22,5 +22,5 @@ I(I == center) = 1;
 
 pix = sum(sum(I));
 
-imshow(I),title(sprintf('BW %s (%d).bmp',filename,number));
+% imshow(I),title(sprintf('BW %s (%d).bmp',filename,number));
 imwrite(I,sprintf('BW %s(%d).bmp',filename,number));

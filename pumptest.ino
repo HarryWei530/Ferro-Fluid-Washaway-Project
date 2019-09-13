@@ -36,17 +36,12 @@ void release_shutter(int camera_focus, int camera_shutter,long burst_number){
 
 
 void loop() {
-  if(firstrun == 0){
-    //Take 3 pictures of the initial droplet
-      release_shutter(focus,shutter,3);
-      firstrun = 1;
-  }
   
   while(digitalRead(7) == HIGH){
     // Flush Pump for time one ms,then wait for time two ms
-    digitalWrite(12,HIGH);
+    digitalWrite(pump_start,HIGH);
     delay(3000);
-    digitalWrite(12,LOW);
+    digitalWrite(pump_start,LOW);
     delay(1000);
     release_shutter(focus,shutter,3);
     delay(100);

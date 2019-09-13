@@ -15,10 +15,8 @@ end;
 
 function plot_original_and_rate(m,trialname)
 
-disp("Plotting " + trialname);
-
 x = m(:,1);
-y = (m(:,2)).^3/2;
+y = m(:,2);
 n = 3; %Number of repetitive pictures taken
 
 xunique =  unique(x);
@@ -42,7 +40,7 @@ grid on
 subplot(1,2,2)
 plot(xunique(2:end),dy,'-o');
 axis([0,inf,-8*10^5,1*10^5])
-title(sprintf('Derivative plot %s', trialname))
+title(sprintf('Washaway Rate %s', trialname))
 xlabel('Time [s]')
 ylabel('Rate [\Delta Pixel/s]')
 grid on

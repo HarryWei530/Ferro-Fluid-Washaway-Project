@@ -1,4 +1,4 @@
-function cluster_center = Kmeanspic(filename,number,cluster_center,first_iter,pausetime)
+function cluster_center = Kmeanspic(filename,number,cluster_center,first_iter,pausetime,nColors)
 
 warning('off','images:initSize:adjustingMag');
 fprintf("Kmeans is running on top (%d)\n",number);
@@ -39,7 +39,7 @@ ab = double(lab_he(:,:,2:3));
 nrows = size(ab,1);
 ncols = size(ab,2);
 ab = reshape(ab,nrows*ncols,2);
-nColors = 8; % Setting number of clusters
+% nColors = 8; % Setting number of clusters
 if first_iter
 [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
                                       'Replicates',1,'Options',statset('UseParallel',true));

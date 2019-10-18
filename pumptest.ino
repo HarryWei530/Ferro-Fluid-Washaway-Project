@@ -4,6 +4,7 @@ int pump_start = 12;
 int focus = 11;
 int main_start = 7;
 double shutter_speed = 0.0025;
+int pump_on_time = 2000;
 
 
 void setup() {
@@ -40,7 +41,7 @@ void loop() {
   while(digitalRead(7) == HIGH){
     // Flush Pump for time one ms,then wait for time two ms
     digitalWrite(pump_start,HIGH);
-    delay(3000);
+    delay(pump_on_time);
     digitalWrite(pump_start,LOW);
     delay(1000);
     release_shutter(focus,shutter,3);

@@ -18,7 +18,7 @@ if (length(elements)~=1)
         temp(temp == elements(1,i)) = 1;
         elements(2,i) = sum(sum(temp));
     end
-    center = max(elements(1,:));
+    center = elements(1,find(elements == max(elements(2,:)))/2);
 else
     center = elements;
 end

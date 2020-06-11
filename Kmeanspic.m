@@ -6,20 +6,28 @@ rng(1)
 im = imread(sprintf('%s (%d).JPG',filename,number));
 
 %% determines ROI
+    imcenter = double(size(im)/2);
+    imcenter = flip(imcenter(1:2)); % Find center index of the image
+%   Otsu thresholding
     imROI = rgb2gray(im);
     level = graythresh(imROI);
     BW = imbinarize(imROI,level);  %Otsu thresholding
     BW = logical(BW*-1+1);
-
     BW= bwlabel(BW, 8);
+%   Find correct droplet location, crop to droplet
     stats = regionprops(BW,'Area','Centroid');
-    idx = find([stats.Area] == max([stats.Area]));  %Find maximum connected component (should be the droplet)
-    center = uint16(stats(idx).Centroid);  %Find center of droplet
-    rect = [center(1)-2000,center(2)-1500,4000,3000];  %Form ROI around center of droplet 
+    %compute Euclidean distances between centroids and imcenter, find label
+    %with min distance
+    dists = zeros(length(stats),2);
+    for i = 1:length(stats)
+        dists(i,:) = [i,sum((stats(i).Centroid - imcenter).^2,2)];
+    end
+    mindistIdx = find(dists(:,2) == min(dists(:,2)));
+    mindistCentroid = uint16(stats(mindistIdx).Centroid);
+    rect = [mindistCentroid(1)-1500,mindistCentroid(2)-1000,3000,2000];  % Rectangle around center of droplet
 %% Performs Kmeans on LAB colour space, save clusters in grayscale
-
 if(pausetime~=0)
-    figure(1);
+    figure(100);
     imshow(im)
     rectangle('Position',rect,'EdgeColor','r')
     pause(pausetime);
@@ -44,8 +52,10 @@ if first_iter
 [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
                                       'Replicates',1,'Options',statset('UseParallel',true));
 else
+%     [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
+%                                       'Replicates',1,'Start',cluster_center,'Options',statset('UseParallel',true));
     [cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqeuclidean', ...
-                                      'Replicates',1,'Start',cluster_center,'Options',statset('UseParallel',true));
+                                      'Replicates',1,'Options',statset('UseParallel',true));
 end
 ROI = reshape(cluster_idx,nrows,ncols);
 ROI = uint8(ROI*20);

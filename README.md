@@ -3,5 +3,5 @@
 ### The Cooper Union
 
 This project contains code that binarizes top images taken of a ferrofluid.\
-Full paper (not yet publised) could be found here.\
-https://drive.google.com/a/cooper.edu/file/d/1n_MDN-jf-hPqSKcrG93Qoixb1uKphmEK/view?usp=sharing
+Full manuscript submitted to Elsevier could be found here.\
+https://drive.google.com/file/d/1aFLQxqQAWzpjbl_Yt9VTTkA94trhTBzR/view?usp=sharing
